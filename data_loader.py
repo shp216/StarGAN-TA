@@ -90,3 +90,33 @@ def get_loader(image_dir, attr_path, selected_attrs, crop_size=178, image_size=1
                                   shuffle=(mode=='train'),
                                   num_workers=num_workers)
     return data_loader
+
+
+
+class neutral_dataset(data.Dataset):
+    def __init__(self, sample_label_dir, transform):
+        super().__init__()
+        self.sample_label_dir = sample_label_dir
+        self.transform = transform
+        self.dataset = ImageFolder(self.sample_label_dir, transform)
+        
+    def __len__(self):
+        return len(self.dataset)
+    
+    def __getitem__(self, index):
+        x = self.dataset[index][0]
+        y = self.dataset[index][1]
+        return x,y
+    
+def get_sample(config):
+    transform = []
+    transform.append(T.CenterCrop(config.rafd_crop_size))
+    transform.append(T.Resize(config.image_size))
+    transform.append(T.ToTensor())
+    transform.append(T.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5)))
+    transform = T.Compose(transform)
+    dataset = neutral_dataset(config.sample_label_dir, transform)
+    data_loader = data.DataLoader(dataset=dataset,
+                                 batch_size=config.batch_size,
+                                 num_workers=config.num_workers)
+    return data_loader
