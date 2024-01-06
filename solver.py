@@ -742,8 +742,8 @@ class Solver(object):
             test_list2 = []
             test_list2.append(img_path)        
                 
-            for path in test_list2:
-                #path = '/home/mineslab-ubuntu/stargan/Original_jpg/{}.jpg'.format(per)
+            for per in test_list1:
+                path = 'Original_jpg/{}.jpg'.format(per)
                 img_file = cv2.imread(path)
                 name = path.split('/')[-1][:-4]
                 
