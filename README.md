@@ -1,5 +1,7 @@
 # StarGAN-TA(StarGAN with Transfer Learning and changed Activation function)
 
+<img src="./pics/total_image.png" alt="total_image" style="zoom:50%;" />
+
 "GAN, the most representative model in image generation, has made significant advancements and found various applications in different fields. StarGAN addresses the problem of having to construct separate models for each domain, allowing one model to learn and transform across multiple domains. Based on this, numerous studies have been conducted on image transformations. Among them, emotion generation research is a technology for human emotional expression and interaction, widely applicable in various fields. In this paper, we directly collect data on six selected facial expressions for emotion-based image transformation. We propose StarGAN-TA, applying transfer learning to the StarGAN model, to achieve improved image transformations."
 
 This repository follows the official PyTorch implementation of the following paper:
@@ -12,34 +14,72 @@ This repository follows the official PyTorch implementation of the following pap
 >
 > **Abstract:** *Recent studies have shown remarkable success in image-to-image translation for two domains. However, existing approaches have limited scalability and robustness in handling more than two domains, since different models should be built independently for every pair of image domains. To address this limitation, we propose StarGAN, a novel and scalable approach that can perform image-to-image translations for multiple domains using only a single model. Such a unified model architecture of StarGAN allows simultaneous training of multiple datasets with different domains within a single network. This leads to StarGAN's superior quality of translated images compared to existing models as well as the novel capability of flexibly translating an input image to any desired target domain. We empirically demonstrate the effectiveness of our approach on a facial attribute transfer and a facial expression synthesis tasks.*
 
+* Setting up a virtual environment using ''conda''
+
+  NAME is virtual environment Name. User can set this one. ex)StarGAN, virtual_star, ... 
+
+  python version is 3.7 
+
+  ```terminal
+  conda create -n NAME python 3.7
+  conda activate NAME
+  ```
+
+* git clone 
+
+  ```terminal
+  git clone https://github.com/shp216/StarGAN-TA.git
+  ```
+
+  
+
+* Download requirements.txt
+
+  ```terminal
+  pip install -r requirements.txt
+  ```
+
+  
+
+
+
 * Data Composition
 
   We compose data for 6 facial expressions. If want to add more facial expressions like (annoyed, scared), add data folder in the same location(--rafd_image_dir). Empirically we find out that more than 500 pictures are needed for good results.
 
-  - Own StarGAN Folder
+  For the training data, place the data corresponding to the labeled expressions in each labeled folder. In this process, the data should be cropped around the face. For data preprocessing, you can use 'datapreprocess.py.' The 'image_preprocess_SIZE' function resizes the image to SIZE and crops the facial area, while the 'image_resize_SIZE' function only resizes the image to SIZE. Functions are provided for SIZE values of 64, 128, 256, and 512, respectively.
+
+  For testing data, if you want to conduct testing on cropped images, place the cropped images you want to inference in the 'person' folder. If you want to conduct testing on the original images without cropping, place the original images you want to inference in the 'origin_person' folder
+
+  - Own StarGAN Folder(Our name is stargan_new_6_leaky)
 
     - Data
 
       - train
 
         - happy
-
         - sad
-
         - surprised
-
         - neutral
-
         - fearful
-
         - Angry
+      
+      - test
+      
+        - person
+        - origin_person
 
-          
+        
 
 * Training
 
   ``` cmd
-  python3 main.py --mode train --data RaFD --image_size 256 --   model_save_dir='stargan_new_6_leaky/models' --result_dir='stargan_new_6_leaky/result' --rafd_image_dir='stargan_new_6_leaky/data/train' --sample_dir='stargan_new_6_leaky/samples' --sample_label_dir='stargan_new_6_leaky/samples'
+  python3 main.py --mode train --data RaFD --image_size 256 \ 
+  --model_save_dir='stargan_new_6_leaky/models' \
+  --result_dir='stargan_new_6_leaky/result' \ 
+  --rafd_image_dir='stargan_new_6_leaky/data/train' \
+  --sample_dir='stargan_new_6_leaky/samples' \
+  --sample_label_dir='stargan_new_6_leaky/samples'
   ```
 
   
@@ -50,20 +90,32 @@ This repository follows the official PyTorch implementation of the following pap
 
   1. Change face attribution(ex. Smile, sad, ..) for one person(cropped image) - person
 
-     <img src="./pics/cropped.png" alt="cropped" style="zoom:33%;" />
+     <img src="./pics/cropped.png" alt="cropped" style="zoom: 25%;" />
 
      ```cmd
-     python3 main.py --mode test --data RaFD --image_size 128 --model_save_dir='stargan_new_6_leaky/models' --result_dir='stargan_new_6_leaky/results' -- sample_dir='stargan_new_6_leaky/samples' --sample_label_dir='stargan_new_6_leaky/data/train' --test_mode person --test_iters 330000
+     python3 main.py --mode test --data RaFD --image_size 128 \
+     --model_save_dir='stargan_new_6_leaky/models' \
+     --result_dir='stargan_new_6_leaky/results' \
+     --sample_dir='stargan_new_6_leaky/samples' \
+     --sample_label_dir='stargan_new_6_leaky/data/train' \
+     --test_mode person \
+     --test_iters 330000
      ```
 
      
 
   2. Change face attribution for one person(No need to crop) - origin_person
 
-     <img src="./pics/original.png" alt="cropped" style="zoom:33%;" />
+     <img src="./pics/original.png" alt="cropped" style="zoom: 25%;" />
 
      ```cmd
-     python3 main.py --mode test --data RaFD --image_size 128 --model_save_dir='stargan_new_6_leaky/models' --result_dir='stargan_new_6_leaky/results' -- sample_dir='stargan_new_6_leaky/samples' --sample_label_dir='stargan_new_6_leaky/data/train' --test_mode origin_person --test_iters 330000
+     python3 main.py --mode test --data RaFD --image_size 128 \
+     --model_save_dir='stargan_new_6_leaky/models' \
+     --result_dir='stargan_new_6_leaky/results' \
+     --sample_dir='stargan_new_6_leaky/samples' \
+     --sample_label_dir='stargan_new_6_leaky/data/train' \
+     --test_mode origin_person \
+     --test_iters 330000
      ```
 
      
