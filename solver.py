@@ -583,12 +583,12 @@ class Solver(object):
         elif self.dataset == 'RaFD':
             data_loader = self.rafd_loader
 
-        ############################################# Original Code ###############################################
+################################################################## person ######################################################################################
         if self.test_mode == 'person':
             crop_size = self.crop_size
             image_size = self.image_size
             
-            img_list = glob.glob('stargan_new_6_leaky/data/test/*')
+            img_list = glob.glob('stargan_new_6_leaky/data/test/person/*')
             #img_list = glob.glob('Original/*')
             
             for image in img_list:
@@ -649,101 +649,16 @@ class Solver(object):
                     result_path = os.path.join(self.result_dir, 'total', 'total_{}-images.jpg'.format(name))
                     save_image(self.denorm(x_concat.data.cpu()), result_path, nrow=1, padding=0)
                     print('Saved real and fake images into {}...'.format(result_path))
+###################################################################################################################################################
+
         
-        ###################################################################### New code 3/2 #########################################################################
+########################################################################## origin_person #########################################################################
         
-        elif self.test_mode == 'group':
-            img_path = '/home/mineslab-ubuntu/stargan/Original_jpg/newjeans.jpg'
-            img_path2 = '/home/mineslab-ubuntu/stargan/Original_jpg/bss.png'
-            
-            path = img_path2
-            
-            img_file = cv2.imread(path)
-            name = path.split('/')[-1][:-4]
-            
-            img_list = detection_and_resize_original(img_file)
-
-            totensor = T.ToTensor()
-            norm = T.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
-            
-            img_file = cv2.cvtColor(img_list[0], cv2.COLOR_BGR2RGB)
-            #img_file = cv2.cvtColor(img_file, cv2.COLOR_BGR2RGB)
-            original = totensor(img_file)
-            original = norm(original)
-
-            print("Original size : {}".format(original.shape))
-            
-            for k, image in enumerate(img_list):
-                if k == 0:
-                    continue
-                img, (x, y, w, h) = image
-                
-                print(img.size)
-                #img.show()
-                image_size = img.size[0]
-                
-                transform = []
-                
-                transform.append(T.CenterCrop(image_size))
-                transform.append(T.ToTensor())
-                transform.append(T.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5)))
-                transform = T.Compose(transform)
-
-                x_real = transform(img)
-                
-                x_real = x_real.view(1, 3, image_size, image_size)
-                c_org = torch.Tensor([3])
-                print("Size of x_real is {}".format(x_real.size()))
-                with torch.no_grad():
-                    x_real = x_real.to(self.device)
-                    c_trg_list = self.create_labels(c_org, self.c_dim, self.dataset, self.selected_attrs)
-
-                    # Translate images.
-                    x_fake_list = [x_real]
-                    for c_trg in c_trg_list:
-                        x_fake_list.append(self.G(x_real, c_trg))
-                    for j, fake in enumerate(x_fake_list):
-                        
-                        if j == 0:
-                            continue
-                        if j == 1:
-                            result_path = os.path.join(self.result_dir, 'angry', 'angry_{}{}-images.jpg'.format(name,k))
-                        if j == 2:
-                            result_path = os.path.join(self.result_dir, 'fearful', 'fearful_{}{}-images.jpg'.format(name,k))
-                        if j == 3:
-                            result_path = os.path.join(self.result_dir, 'happy', 'happy_{}{}-images.jpg'.format(name,k))
-                        if j == 4:
-                            result_path = os.path.join(self.result_dir, 'neutral', 'neutral_{}{}-images.jpg'.format(name,k))
-                        if j == 5:
-                            result_path = os.path.join(self.result_dir, 'sad', 'sad_{}{}-images.jpg'.format(name,k))
-                        if j == 6:
-                            result_path = os.path.join(self.result_dir, 'surprised', 'surprised_{}{}-images.jpg'.format(name,k))
-
-
-                        save_image(self.denorm(fake.data.cpu()), result_path, nrow=1, padding=0)
-                        print('Saved real and fake images into {}...'.format(result_path))
-                    
-                    tranlate_img = x_fake_list[5].data.cpu().squeeze(0) # 얼굴마다 각기 다른 표정 넣기
-                    print("Size of translate_img : {}".format(tranlate_img.shape))
-                    for j in range(3):
-                        for i in range(y, y+h):
-                            original[j][i-h][x:x+w] = tranlate_img[j][i-y]
-                    print('Translate Face expression');print()
-                        
-            result_path = os.path.join(self.result_dir, 'total', 'people-{}{}-images.jpg'.format(name,5))
-
-            save_image(self.denorm(original.data.cpu()), result_path, nrow = 1, padding = 0)
-            print('Saved real and fake images into {}...'.format(result_path))
-        
-        ###########################################################################################################
         elif self.test_mode == 'origin_person':
-            
-            test_list1 = ['sehwan', 'tak', 'robert', 'jimin', 'angelina', 'watson']
-            test_list2 = []
-            test_list2.append(img_path)        
+
+            img_list = glob.glob('stargan_new_6_leaky/data/test/origin_person/*')
                 
-            for per in test_list1:
-                path = 'Original_jpg/{}.jpg'.format(per)
+            for path in img_list:
                 img_file = cv2.imread(path)
                 name = path.split('/')[-1][:-4]
                 
@@ -843,6 +758,7 @@ class Solver(object):
                     result_path = os.path.join(self.result_dir, 'mesh_result', 'total_origin_{}.jpg'.format(name))
                     save_image(self.denorm(x_concat.data.cpu()), result_path, nrow=1, padding=0)
                     print('Saved real and fake images into {}...'.format(result_path))
+    ####################################################################################################################################################
         
         ################################################### Until this part. #######################################################
 
