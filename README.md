@@ -74,12 +74,12 @@ This repository follows the official PyTorch implementation of the following pap
 * Training
 
   ``` cmd
-  python3 main.py --mode train --data RaFD --image_size 256 \ 
+  python3 main.py --mode train --data RaFD --image_size 128 \ 
   --model_save_dir='stargan_new_6_leaky/models' \
   --result_dir='stargan_new_6_leaky/result' \ 
   --rafd_image_dir='stargan_new_6_leaky/data/train' \
   --sample_dir='stargan_new_6_leaky/samples' \
-  --sample_label_dir='stargan_new_6_leaky/samples'
+  --sample_label_dir='stargan_new_6_leaky/data/train'
   ```
 
   
