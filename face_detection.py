@@ -56,7 +56,7 @@ def detection_face_test(image):
                 print(x,y,w,h)
                 annotated_image = image[y-h//4:y+h, x:x+w]
 
-                cv2.imwrite("data/trash/{}.jpg".format(i), annotated_image)
+                cv2.imwrite("data/test/{}.jpg".format(i), annotated_image)
                 image_list.append([Image.fromarray(cv2.cvtColor(annotated_image, cv2.COLOR_BGR2RGB)), (x, y, w, h)])
         except:
             pass
@@ -114,7 +114,7 @@ def detection_and_resize_original(image):
 
                     #annotated_image = cv2.cvtColor(annotated_image, cv2.COLOR_BGR2RGB)
                     image_list.append([Image.fromarray(annotated_image), (x, y, w, h)])
-                    # cv2.imwrite("data/trash/{}.jpg".format(i), annotated_image)
+                    cv2.imwrite("data/{}.jpg".format(i), annotated_image)
                     # cv2.imwrite("data/trash/original_{}.jpg".format(i), image)
                 if w <= resize_face_size:
                     break

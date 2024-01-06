@@ -22,13 +22,13 @@ from face_detection import detection_face_test, detection_and_resize_original, g
 class Solver(object):
     """Solver for training and testing StarGAN."""
 
-    def __init__(self, celeba_loader=None, rafd_loader=None, config=None):
+    def __init__(self, celeba_loader, rafd_loader, config):
         """Initialize configurations."""
 
         # Data loader.
         self.celeba_loader = celeba_loader
         self.rafd_loader = rafd_loader
-        #self.sample_loader =  get_sample(config)
+        self.sample_loader =  get_sample(config)
         
         # Model configurations.
         self.c_dim = config.c_dim
@@ -128,8 +128,8 @@ class Solver(object):
         D_path = os.path.join(self.model_save_dir, '{}-D.ckpt'.format(resume_iters))
         #self.G.load_state_dict(torch.load(G_path, map_location=lambda storage, loc: storage))
         #self.D.load_state_dict(torch.load(D_path, map_location=lambda storage, loc: storage))
-        saved_checkpoint_G = torch.load(G_path, map_location=self.device)
-        saved_checkpoint_D = torch.load(D_path, map_location=self.device)
+        saved_checkpoint_G = torch.load(G_path)
+        saved_checkpoint_D = torch.load(D_path)
         
         if self.c_dim == 5:
             self.G.load_state_dict(saved_checkpoint_G, strict = False)
@@ -589,6 +589,7 @@ class Solver(object):
             image_size = self.image_size
             
             img_list = glob.glob('stargan_new_6_leaky/data/test/*')
+            #img_list = glob.glob('Original/*')
             
             for image in img_list:
                 img = Image.open(image)

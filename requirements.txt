@@ -1,0 +1,13 @@
+mediapipe
+numpy
+opencv-python
+packaging
+Pillow
+requests
+torch
+torchvision
+tqdm
+urllib3
+PyUserInput
+dlib
+scipy

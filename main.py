@@ -95,8 +95,8 @@ if __name__ == '__main__':
     parser.add_argument('--rafd_image_dir', type=str, default='data/RaFD/train')
     parser.add_argument('--log_dir', type=str, default='stargan/logs')
     parser.add_argument('--model_save_dir', type=str, default='stargan_new_6_leaky/models')
-    parser.add_argument('--sample_dir', type=str, default='stargan/samples')
-    parser.add_argument('--sample_label_dir', type=str, default='stargan/samples')
+    parser.add_argument('--sample_dir', type=str, default='stargan_new_6_leaky/samples')
+    parser.add_argument('--sample_label_dir', type=str, default='data/train')
     parser.add_argument('--result_dir', type=str, default='stargan_new_6_leaky/results')
     parser.add_argument('--image_path', type=str, default=None)
     
@@ -110,3 +110,8 @@ if __name__ == '__main__':
     config = parser.parse_args()
     print(config)
     main(config)
+    
+'''
+python main.py --mode train --dataset RaFD --rafd_crop_size 256 --image_size 256 --c_dim 6 --rafd_image_dir data/train --sample_dir stargan_new_6_leaky/samples --log_dir stargan_new_6_leaky/logs --model_save_dir stargan_new_6_leaky/models --result_dir stargan_new_6_leaky/results
+
+'''

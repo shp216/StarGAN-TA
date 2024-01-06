@@ -28,16 +28,16 @@ class Generator(nn.Module):
         layers = []
         layers.append(nn.Conv2d(3+c_dim, conv_dim, kernel_size=7, stride=1, padding=3, bias=False))
         layers.append(nn.InstanceNorm2d(conv_dim, affine=True, track_running_stats=True))
-        layers.append(nn.ReLU(inplace=True))
-        #layers.append(nn.LeakyReLU(0.01))
+        #layers.append(nn.ReLU(inplace=True))
+        layers.append(nn.LeakyReLU(0.01))
 
         # Down-sampling layers.
         curr_dim = conv_dim
         for i in range(2):
             layers.append(nn.Conv2d(curr_dim, curr_dim*2, kernel_size=4, stride=2, padding=1, bias=False))
             layers.append(nn.InstanceNorm2d(curr_dim*2, affine=True, track_running_stats=True))
-            layers.append(nn.ReLU(inplace=True))
-            #layers.append(nn.LeakyReLU(0.01))
+            #layers.append(nn.ReLU(inplace=True))
+            layers.append(nn.LeakyReLU(0.01))
             curr_dim = curr_dim * 2
 
         # Bottleneck layers.
@@ -48,8 +48,8 @@ class Generator(nn.Module):
         for i in range(2):
             layers.append(nn.ConvTranspose2d(curr_dim, curr_dim//2, kernel_size=4, stride=2, padding=1, bias=False))
             layers.append(nn.InstanceNorm2d(curr_dim//2, affine=True, track_running_stats=True))
-            layers.append(nn.ReLU(inplace=True))
-            #layers.append(nn.LeakyReLU(0.01))
+            #layers.append(nn.ReLU(inplace=True))
+            layers.append(nn.LeakyReLU(0.01))
             curr_dim = curr_dim // 2
 
         layers.append(nn.Conv2d(curr_dim, 3, kernel_size=7, stride=1, padding=3, bias=False))
