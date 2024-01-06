@@ -84,7 +84,9 @@ This repository follows the official PyTorch implementation of the following pap
 
   
 
-* 2 modes for this model(test data location is fixed so we notify test data location in code.)
+* Test
+
+  2 modes for this model(test data location is fixed so we notify test data location in code.)
 
   The size of the input image is not constrained by the model; it is resized to the image size value specified within the model during operation
 
