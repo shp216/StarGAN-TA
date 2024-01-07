@@ -67,9 +67,20 @@ This repository follows the official PyTorch implementation of the following pap
       - test
       
         - person
+      
         - origin_person
-
+      
+          
+      
         
+
+* Using Pretrained Model
+
+  https://drive.google.com/file/d/1g8QCW5h3MSiT1tirDEfUzarRT_5y3HQ8/view?usp=sharing
+
+  You can use trained model weight from link. test_iter is 330000 for Discriminator and Generator.
+
+  To perform testing, place the model weights in stargan_new_6_leaky/models. When using a pretrained model, set the 'test_iter' to 330000 and proceed with the testing.
 
 * Training
 
